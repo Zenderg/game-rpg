@@ -1,17 +1,9 @@
 import global from "./globalVariables";
 
+let axis = {};
+
 const controls = (keys) => {
-    // console.log(global.keys)
-    const axis = {
-        87: global.pers.up,
-        65: global.pers.left,
-        83: global.pers.down,
-        68: global.pers.right,
-        38: global.pers.up,
-        37: global.pers.left,
-        40: global.pers.down,
-        39: global.pers.right,
-    };
+    initAxis();
 
     keys.map(item => {
         try{
@@ -22,6 +14,21 @@ const controls = (keys) => {
             throw 'У такой клавиши нет привязки'
         }
     })
+};
+
+const initAxis = () =>{
+  if(Object.keys(axis).length === 0){
+      axis = {
+          87: global.pers.up,
+          65: global.pers.left,
+          83: global.pers.down,
+          68: global.pers.right,
+          38: global.pers.up,
+          37: global.pers.left,
+          40: global.pers.down,
+          39: global.pers.right,
+      };
+  }
 };
 
 export default controls;
