@@ -10,16 +10,16 @@ export default class Character {
   createCharacter(){
     global.ctx.fillRect(this.x, this.y, 20, 20);
   }
-  forward(){
+  forward = () => {
     this.timer('y', -1);
   }
-  back(){
+  back = () => {
     this.timer('y', 1);
   }
-  left(){
+  left = () => {
     this.timer('x', -1);
   }
-  right(){
+  right = () => {
     this.timer('x', 1);
   }
   timer = (axis ,side, n = 0) => {

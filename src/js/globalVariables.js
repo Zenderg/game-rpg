@@ -3,5 +3,10 @@ export default {
   width: window.innerWidth,
   ctx:null,
   pers: null,
-
+  keys:{
+    d:false,
+    s:false,
+    a:false,
+    w:false
+  }
 }
