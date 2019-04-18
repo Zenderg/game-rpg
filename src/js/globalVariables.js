@@ -3,6 +3,8 @@ export default {
   width: window.innerWidth,
   ctx:null,
   pers: null,
+  npc: null,
+  monster:null,
   keys:{
     87:false, // W
     65:false, // A
