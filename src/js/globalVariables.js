@@ -4,9 +4,13 @@ export default {
   ctx:null,
   pers: null,
   keys:{
-    d:false,
-    s:false,
-    a:false,
-    w:false
+    87:false, // W
+    65:false, // A
+    83:false, // S
+    68:false, // D
+    38: false, // ArrowUp
+    37: false, // ArrowLeft
+    40: false, // ArrowDown
+    39: false // ArrowRight
   }
 }
