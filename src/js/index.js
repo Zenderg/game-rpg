@@ -1,6 +1,13 @@
 import '../scss/style.scss'
 
-import {kek} from './component';
+const init = () => {
+  const field = document.getElementById("field");
+  const ctx = field.getContext('2d');
 
-let kok=kek;
-console.log(kok);
+  ctx.fillStyle = "rgb(255,255,255)";
+  ctx.fillRect(0,0,10,10);
+};
+
+window.onload = () => {
+  init();
+};
