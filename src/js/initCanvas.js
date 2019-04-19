@@ -1,27 +1,22 @@
 import global from "./globalVariables";
-import Character from "./Character";
-import NPC from './NPC';
-import Monster from './Monster';
 import controls from "./controls";
 import {activeKeys} from "./helpers";
+import initCreatures from './creatures/initCreatures';
+import renderCreatures from './creatures/renderCreatures';
 
 const init = () => {
     const field = createCanvas();
     global.ctx = field.getContext('2d');
 
-    global.pers = new Character(10, 10);
-    global.npc = new NPC(600,600);
-    global.monster = new Monster(300, 300);
+    initCreatures();
 
     window.requestAnimationFrame(draw);
 };
 
 const draw = () => {
     global.ctx.clearRect(0,0, global.width, global.height);
-    global.pers.create();
-    global.npc.create();
-    global.npc.move();
-    global.monster.create();
+
+    renderCreatures();
 
     controls(activeKeys());
 

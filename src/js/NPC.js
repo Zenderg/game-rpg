@@ -4,12 +4,13 @@ import Being from "./Being";
 export default class NPC extends Being {
     canMove = true;
 
-    constructor(x, y) {
+    constructor(x, y, name) {
         super();
         this.step = 0.3;
         this.speed = 340;
         this.x = x;
         this.y = y;
+        this.name.text = name;
     }
 
     create = () => {
