@@ -20,6 +20,7 @@ const renderNPC = () => {
 const renderMonster = () => {
   global.monster.create();
   global.monster.showName();
+  global.monster.showAgroRange();
 };
 
 export default renderCreatures;
