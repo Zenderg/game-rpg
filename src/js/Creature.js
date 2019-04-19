@@ -37,22 +37,20 @@ export default class Creature {
   };
 
   moveTo = (pers) => {
-    console.log()
     const lengthLine = Math.sqrt(
         (pers.center.x - this.x) ** 2 + (pers.center.y - this.y) ** 2);
     if (lengthLine > this.limitCome) {
-      // support
-      global.ctx.beginPath();
-      global.ctx.moveTo(this.center.x, this.center.y);
-      global.ctx.lineTo(pers.center.x, pers.center.y);
-      global.ctx.stroke();
-
-      const originalAngle = Math.atan2(this.center.y - pers.center.y,
-          this.center.x - pers.center.x) / Math.PI * 180;
-
-      const angle = (originalAngle < 0) ? originalAngle + 360 : originalAngle;
-      this.x += this.step * Math.cos(angle) * 3;
-      this.y += this.step * Math.sin(angle) * 3;
+      const vectorX = this.center.x - pers.center.x;
+      const vectorY = this.center.y - pers.center.y;
+      if(-vectorX < 1 || -vectorY < 1) {
+        console.log(this.center.x, pers.center.x);
+        console.log(this.center.y, pers.center.y);
+      }
+      // console.log(-vectorX, -vectorY);
+//       console.log(Math.abs(-vectorX/this.step)|0, Math.abs(-vectorY/this.step)|0)
+// console.log(-vectorX/(Math.abs(-vectorX/this.step)|0), -vectorY/(Math.abs(-vectorY/this.step)|0));
+      if (vectorX !== 0) this.x +=-vectorX/(Math.abs(-vectorX/this.step)|0);
+      if (vectorY !== 0) this.y +=-vectorY/(Math.abs(-vectorY/this.step)|0);
     }
   };
 

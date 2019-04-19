@@ -1,27 +1,33 @@
 import global from '../globalVariables';
 
 const renderCreatures = () =>{
-  renderPers();
+  renderCharacters();
   renderNPC();
   renderMonster();
 };
 
-const renderPers = () => {
-  global.pers.create();
-  global.pers.showName();
+const renderCharacters = () => {
+  global.characters.map(character => {
+    character.create();
+    character.showName();
+  });
 };
 
 const renderNPC = () => {
-  global.npc.create();
-  global.npc.showName();
-  global.npc.move();
+  global.npcs.map(npc => {
+    npc.create();
+    npc.showName();
+    npc.move();
+  });
 };
 
 const renderMonster = () => {
-  global.monster.create();
-  global.monster.showName();
-  global.monster.showAgroRange();
-  global.monster.agro(global.pers)
+  global.monsters.map(monster => {
+    monster.create();
+    monster.showName();
+    monster.showAgroRange();
+    monster.agro(global.characters[0])
+  });
 };
 
 export default renderCreatures;

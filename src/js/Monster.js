@@ -11,6 +11,7 @@ export default class Monster extends Creature {
     this.x = x;
     this.y = y;
     this.name.text = name;
+    this.step = 2;
     this.setCenter(x, y);
   }
 

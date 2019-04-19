@@ -3,9 +3,9 @@ export default {
   height: window.innerHeight,
   width: window.innerWidth,
   ctx:null,
-  pers: null,
-  npc: null,
-  monster:null,
+  characters: [],
+  npcs: [],
+  monsters:[],
   keys:{
     87:false, // W
     65:false, // A
