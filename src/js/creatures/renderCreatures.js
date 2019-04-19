@@ -21,6 +21,7 @@ const renderMonster = () => {
   global.monster.create();
   global.monster.showName();
   global.monster.showAgroRange();
+  global.monster.agro(global.pers)
 };
 
 export default renderCreatures;

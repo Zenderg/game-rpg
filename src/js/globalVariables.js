@@ -1,4 +1,5 @@
 export default {
+  focus: document.hasFocus(),
   height: window.innerHeight,
   width: window.innerWidth,
   ctx:null,

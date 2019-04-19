@@ -4,7 +4,6 @@ let axis = {};
 
 const controls = (keys) => {
     initAxis();
-
     keys.map(item => {
         try{
             axis[item]();
