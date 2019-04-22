@@ -33,8 +33,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm lint-staged",
-      "pre-push": "npm lint-staged"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
     }
+  },
+  "dependencies": {
+    "phaser": "^3.16.2"
   }
 }
