@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "prod": "webpack --mode production",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "server": "nodemon server"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +32,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^1.18.11",
     "phaser": "^3.16.2"
   }
 }
