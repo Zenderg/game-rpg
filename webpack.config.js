@@ -3,17 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = () => {
   return {
-    entry: [
-      'webpack/hot/dev-server',
-      path.join(__dirname, '/src/js/index.ts') // eslint-disable-line
-    ],
+    entry: './src/js/index.ts',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js'
     },
     resolve: {
-      // changed from extensions: [".js", ".jsx"]
-      extensions: ['.ts', '.tsx', '.js', '.jsx']
+      extensions: ['.ts', '.js']
     },
     module: {
       rules: [
@@ -30,6 +26,15 @@ module.exports = () => {
           test: /\.html$/,
           include: path.resolve(__dirname, 'src/'),
           use: ['raw-loader']
+        },
+        {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[hash].[ext]'
+            }
+          }
         }
       ]
     },
@@ -44,6 +49,7 @@ module.exports = () => {
       contentBase: './dist',
       port: 3000
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
+    watch: true
   };
 };
