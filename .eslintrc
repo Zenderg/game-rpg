@@ -1,5 +1,8 @@
 {
   "parser": "babel-eslint",
-  "rules": {
+  "extends": "airbnb-base/legacy",
+  "env": {
+    "amd": true,
+    "node": true
   }
 }

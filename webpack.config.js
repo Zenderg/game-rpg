@@ -1,98 +1,49 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = (env, argv) => {
-
-    // if (argv.mode === 'development') {
-    // }
-    //
-    // if (argv.mode === 'production') {
-    // }
-
-    return {
-        entry: [
-            'webpack/hot/dev-server',
-            path.join(__dirname, '/src/js/index.js')
-        ],
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'bundle.js'
+module.exports = () => {
+  return {
+    entry: [
+      'webpack/hot/dev-server',
+      path.join(__dirname, '/src/js/index.ts') // eslint-disable-line
+    ],
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'bundle.js'
+    },
+    resolve: {
+      // changed from extensions: [".js", ".jsx"]
+      extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: ['babel-loader', 'eslint-loader']
         },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: ["babel-loader", "eslint-loader"]
-                },
-                {
-                    test: /\.scss$/,
-                    use: [
-                        argv.mode !== 'production'
-                            ? 'style-loader'
-                            : MiniCssExtractPlugin.loader,
-                        "css-loader",
-                        "sass-loader"
-                    ]
-                },
-                {
-                    test: /\.pug$/,
-                    use: [
-                        {
-                            loader: 'pug-loader',
-                            options: {
-                                pretty: true
-                            }
-                        }
-                    ],
-                },
-                {
-                    test: /\.(gif|png|jpe?g|svg)$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: 'images/[name].[ext]'
-                            }
-                        },
-                        {
-                            loader: 'image-webpack-loader',
-                            options: {
-                                mozjpeg: {
-                                    progressive: true,
-                                    quality: 70
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    test: /\.(eot|svg|ttf|woff|woff2)$/,
-                    use: {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'fonts/[name][hash].[ext]'
-                        }
-                    }
-                }
-            ]
-        },
-        plugins: [
-            new HtmlWebpackPlugin({
-                filename: 'index.html',
-                template: 'src/pug/index.pug'
-            }),
-            new MiniCssExtractPlugin({
-                filename: 'style.css'
-            }),
-            new webpack.HotModuleReplacementPlugin()
-        ],
-        devServer: {
-            hot: true,
-            contentBase: './dist',
-            port: 3000
-        },
-    }
+        // changed from { test: /\.jsx?$/, use: { loader: 'babel-loader' } },
+        { test: /\.ts?$/, use: { loader: 'awesome-typescript-loader' } },
+        // addition - add source-map support
+        { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+        {
+          test: /\.html$/,
+          include: path.resolve(__dirname, 'src/'),
+          use: ['raw-loader']
+        }
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'src/index.html'
+      })
+    ],
+    devServer: {
+      hot: true,
+      contentBase: './dist',
+      port: 3000
+    },
+    devtool: 'source-map'
+  };
 };
