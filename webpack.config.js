@@ -3,13 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = () => {
   return {
-    entry: './src/js/index.ts',
+    entry: './src/js/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js'
     },
     resolve: {
-      extensions: ['.ts', '.js']
+      extensions: ['.js']
     },
     module: {
       rules: [
@@ -18,9 +18,6 @@ module.exports = () => {
           exclude: /node_modules/,
           loader: ['babel-loader', 'eslint-loader']
         },
-        // changed from { test: /\.jsx?$/, use: { loader: 'babel-loader' } },
-        { test: /\.ts?$/, use: { loader: 'awesome-typescript-loader' } },
-        // addition - add source-map support
         { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
         {
           test: /\.html$/,
