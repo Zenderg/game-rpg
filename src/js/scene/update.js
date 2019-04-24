@@ -1,7 +1,6 @@
 import globalVariables from '../globalVariables';
 function update() {
-  console.log(globalVariables.player);
-  globalVariables.player.body.setZeroVelocity();
+  // globalVariables.player.body.setZeroVelocity();
   if (globalVariables.cursors.left.isDown) {
     globalVariables.player.body.moveLeft(160);
     globalVariables.player.anims.play('left', true);
@@ -17,8 +16,6 @@ function update() {
   } else if (globalVariables.cursors.down.isDown) {
     globalVariables.player.body.moveDown(430);
   }
-
-  console.log('Function updating ready!');
 }
 
 export default update;

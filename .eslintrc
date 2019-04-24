@@ -1,7 +1,15 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb-base/legacy",
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base/legacy"
+  ],
+  "rules": {
+    "linebreak-style": ["error", "windows"]
+  },
   "env": {
+    "browser": true,
+    "es6": true,
     "amd": true,
     "node": true
   }

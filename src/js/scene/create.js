@@ -5,7 +5,6 @@ function create() {
   globalVariables.player = this.physics.add.sprite(100, 450, 'dude');
 
   globalVariables.player.setCollideWorldBounds(true);
-  // this.world.setBounds(0, 0, 1920, 1920);
   const platforms = this.physics.add.staticGroup();
 
   platforms.create(400, 568, 'platform').setScale(2).refreshBody();
@@ -35,8 +34,6 @@ function create() {
   globalVariables.cursors = this.input.keyboard.createCursorKeys();
 
   this.physics.add.collider(platforms);
-
-  console.log('Function create ready!');
 }
 
 export default create;

@@ -25,5 +25,5 @@ window.onload = () => {
   };
 
   globalVariables.game = new phaser.Game(globalVariables.config);
-  // console.log('Starting ...');
+  console.log('Starting ...');
 };
