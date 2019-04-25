@@ -1,14 +1,13 @@
 import globalVariables from '../globalVariables';
 function update() {
-  // globalVariables.player.body.setZeroVelocity();
   if (globalVariables.cursors.left.isDown) {
-    globalVariables.player.body.moveLeft(160);
+    globalVariables.player.setVelocityX(-160);
     globalVariables.player.anims.play('left', true);
   } else if (globalVariables.cursors.right.isDown) {
-    globalVariables.player.body.moveRight(160);
+    globalVariables.player.setVelocityX(160);
     globalVariables.player.anims.play('right', true);
   } else {
-    // globalVariables.player.setVelocityX(0);
+    globalVariables.player.setVelocityX(0);
     globalVariables.player.anims.play('turn');
   }
   if (globalVariables.cursors.up.isDown) {

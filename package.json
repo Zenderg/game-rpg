@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode=development",
+    "dev": "webpack --mode development --watch",
     "prod": "webpack --mode production --watch",
     "lint": "eslint src/**/*.ts",
     "server": "nodemon server",
-    "build": "concurrently \"npm run server\" \"npm run prod\""
+    "build": "concurrently \"npm run server\" \"npm run dev\""
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +39,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "nodemon": "^1.18.11",
-    "phaser": "^3.16.2"
+    "phaser": "^3.16.2",
+    "socket.io": "^2.2.0"
   }
 }
