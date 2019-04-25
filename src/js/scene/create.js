@@ -2,22 +2,34 @@ import globalVariables from '../globalVariables';
 import Phaser from 'phaser';
 
 function addPlayer(self, playerInfo) {
-  console.log(playerInfo);
+  const map = self.make.tilemap({ key: 'map' });
+  const tileset = map.addTilesetImage('my-tiles', 'tiles');
+
+  map.createStaticLayer('bg', tileset, 0, 0);
+  const interactivePlayer = map.createStaticLayer('interactive_player', tileset, 0, 0);
+
+  interactivePlayer.setCollisionByProperty({ collides: true });
+  interactivePlayer.setDepth(10);
+
   globalVariables.player = self.physics.add
     .sprite(400, 550, 'atlas', 'misa-front')
     .setOffset(0, 24)
     .setDepth(20);
+
+  const camera = self.cameras.main;
+  camera.startFollow(globalVariables.player);
+  camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+  self.physics.add.collider(globalVariables.player, interactivePlayer);
 }
 
 function addOtherPlayers(self, playerInfo) {
-  console.log('!!!!!!!!!!!');
-  console.log(playerInfo);
   const otherPlayer = self.physics.add
     .sprite(400, 550, 'atlas', 'misa-front')
     .setOffset(0, 24)
     .setDepth(20);
   otherPlayer.playerId = playerInfo.playerId;
-  self.otherPlayers.add(otherPlayer);
+  globalVariables.otherPlayers.push(otherPlayer);
 }
 
 function create() {
@@ -44,46 +56,24 @@ function create() {
     });
   });
   this.socket.on('playerMoved', function (playerInfo) {
-    console.log(4444444444);
-    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+    globalVariables.otherPlayers.map(function (otherPlayer) {
       if (playerInfo.playerId === otherPlayer.playerId) {
-        otherPlayer.setRotation(playerInfo.rotation);
-        otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+        otherPlayer.body.x = playerInfo.x;
+        otherPlayer.body.y = playerInfo.y;
       }
     });
   });
 
 
-  globalVariables.player = this.physics.add
-    .sprite(400, 550, 'atlas', 'misa-front')
-    .setOffset(0, 24)
-    .setDepth(20);
-  const map = this.make.tilemap({ key: 'map' });
-  const tileset = map.addTilesetImage('my-tiles', 'tiles');
-
-  map.createStaticLayer('bg', tileset, 0, 0);
-  const interactivePlayer = map.createStaticLayer('interactive_player', tileset, 0, 0);
-
-  interactivePlayer.setCollisionByProperty({ collides: true });
-  interactivePlayer.setDepth(10);
-
   // debag
-  const debugGraphics = this.add.graphics().setAlpha(0.75);
-  interactivePlayer.renderDebug(debugGraphics, {
-    tileColor: null, // Color of non-colliding tiles
-    collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-  });
+  // const debugGraphics = this.add.graphics().setAlpha(0.75);
+  // interactivePlayer.renderDebug(debugGraphics, {
+  //   tileColor: null, // Color of non-colliding tiles
+  //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+  //   faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+  // });
 
   globalVariables.cursors = this.input.keyboard.createCursorKeys();
-  globalVariables.controls = new Phaser.Cameras.Controls.FixedKeyControl({
-    camera: this.cameras.cameras[0],
-    left: globalVariables.cursors.left,
-    right: globalVariables.cursors.right,
-    up: globalVariables.cursors.up,
-    down: globalVariables.cursors.down,
-    speed: 0.5
-  });
 
   const anims = this.anims;
   anims.create({
@@ -118,12 +108,6 @@ function create() {
     frameRate: 10,
     repeat: -1
   });
-
-  this.physics.add.collider(globalVariables.player, interactivePlayer);
-
-  const camera = this.cameras.main;
-  camera.startFollow(globalVariables.player);
-  camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 }
 
 
