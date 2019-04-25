@@ -1,2 +1,4 @@
-const globalVariables = {};
+const globalVariables = {
+
+};
 export default globalVariables;
