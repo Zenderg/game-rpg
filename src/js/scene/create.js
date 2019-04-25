@@ -1,7 +1,59 @@
 import globalVariables from '../globalVariables';
 import Phaser from 'phaser';
 
+function addPlayer(self, playerInfo) {
+  console.log(playerInfo);
+  globalVariables.player = self.physics.add
+    .sprite(400, 550, 'atlas', 'misa-front')
+    .setOffset(0, 24)
+    .setDepth(20);
+}
+
+function addOtherPlayers(self, playerInfo) {
+  console.log('!!!!!!!!!!!');
+  console.log(playerInfo);
+  const otherPlayer = self.physics.add
+    .sprite(400, 550, 'atlas', 'misa-front')
+    .setOffset(0, 24)
+    .setDepth(20);
+  otherPlayer.playerId = playerInfo.playerId;
+  self.otherPlayers.add(otherPlayer);
+}
+
 function create() {
+  let self = this;
+  this.socket = io();
+  this.otherPlayers = this.physics.add.group();
+  this.socket.on('currentPlayers', function (players) {
+    Object.keys(players).forEach(function (id) {
+      if (players[id].playerId === self.socket.id) {
+        addPlayer(self, players[id]);
+      } else {
+        addOtherPlayers(self, players[id]);
+      }
+    });
+  });
+  this.socket.on('newPlayer', function (playerInfo) {
+    addOtherPlayers(self, playerInfo);
+  });
+  this.socket.on('disconnect', function (playerId) {
+    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+      if (playerId === otherPlayer.playerId) {
+        otherPlayer.destroy();
+      }
+    });
+  });
+  this.socket.on('playerMoved', function (playerInfo) {
+    console.log(4444444444);
+    self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+      if (playerInfo.playerId === otherPlayer.playerId) {
+        otherPlayer.setRotation(playerInfo.rotation);
+        otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+      }
+    });
+  });
+
+
   globalVariables.player = this.physics.add
     .sprite(400, 550, 'atlas', 'misa-front')
     .setOffset(0, 24)
@@ -73,5 +125,6 @@ function create() {
   camera.startFollow(globalVariables.player);
   camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 }
+
 
 export default create;
