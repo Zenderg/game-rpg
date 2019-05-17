@@ -31,7 +31,7 @@ export class PlayScene extends Phaser.Scene{
                 color: 0xffffff
             }
         });
-        hpBar.fillRect(400, 400, 100, 20).setDepth(2);
+        hpBar.fillRect(400, 400, 100, 5).setDepth(2);
         this.hooded = this.physics.add.sprite(200, 200, 'hooded').setDepth(1);
         this.assassins = this.physics.add.group({immovable: true});
         this.fireAttacks = this.physics.add.group();
