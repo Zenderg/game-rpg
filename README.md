@@ -1,5 +1,5 @@
 # game-rpg
 
-npm i -g parcel-bundler http-server
+npm i
 
 parcel index.html
