@@ -1,14 +1,36 @@
 import Creature from "./Creature";
 
-export default class Anna extends Creature{
-    hp: number;
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frames?: string | number){
+interface hp {
+    current: number,
+    max: number
+}
+
+export default class Anna extends Creature {
+    private hp: hp = {current: 0, max: 0};
+    private hpBar: Phaser.GameObjects.Graphics;
+
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frames?: string | number) {
         super(scene, x, y, texture, frames);
-        this.hp = 10;
-        const hpBar = scene.add.graphics({
-            fillStyle:{
+        this.hp.max = 10;
+        this.hp.current = 10;
+        this.hpBar = scene.add.graphics({
+            fillStyle: {
                 color: 0x15fa03
             }
         });
+        (<any>Object).observe(this.hp, this.updateHpBar);
+    }
+
+    private updateHpBar = () => {
+        this.hpBar.fillRect(400, 400, (this.hp.current / this.hp.max) * 10, 5).setDepth(2);
+        console.log(11111111111111111111111111111);
+    };
+
+    get currentHp(): number {
+        return this.hp.current;
+    }
+
+    set currentHp(hp: number) {
+        this.hp.current = hp;
     }
 }
