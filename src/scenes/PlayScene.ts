@@ -79,7 +79,7 @@ export class PlayScene extends Phaser.Scene{
 
         this.physics.world.addCollider(this.anna, this.assassins, (anna: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
             hooded.destroy();
-            this.anna.hp--;
+            this.anna.hp.currentHp(this.anna.hp.currentHp);
             if (this.anna.hp <= 0) anna.destroy();
             console.log(this.anna.hp);
             console.log();
