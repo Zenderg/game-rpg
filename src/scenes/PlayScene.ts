@@ -79,10 +79,7 @@ export class PlayScene extends Phaser.Scene{
 
         this.physics.world.addCollider(this.anna, this.assassins, (anna: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
             hooded.destroy();
-            this.anna.hp.currentHp(this.anna.hp.currentHp);
-            if (this.anna.hp <= 0) anna.destroy();
-            console.log(this.anna.hp);
-            console.log();
+            this.anna.reduceHp(-1);
             let x = Phaser.Math.Between(0, this.game.renderer.width);
             let y = Phaser.Math.Between(0, this.game.renderer.height);
             for(let i = 0; i < 2; i++){
@@ -92,7 +89,6 @@ export class PlayScene extends Phaser.Scene{
         this.physics.world.addCollider(this.fireAttacks, this.assassins, (fireAttacks: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
             fireAttacks.destroy();
             hooded.destroy();
-            console.log();
             let x = Phaser.Math.Between(0, this.game.renderer.width);
             let y = Phaser.Math.Between(0, this.game.renderer.height);
             for(let i = 0; i < 2; i++){
