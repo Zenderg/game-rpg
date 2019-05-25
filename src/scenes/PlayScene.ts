@@ -42,7 +42,7 @@ export class PlayScene extends Phaser.Scene{
 
         //debug layers
         buildings.renderDebug(this.add.graphics(), {
-           tileColor: null,
+           tileColor: 0,
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 200),
             faceColor: new Phaser.Display.Color(40, 39, 37, 255)
         });
@@ -99,8 +99,8 @@ export class PlayScene extends Phaser.Scene{
     update(time: number, delta: number){
         for(let i = 0; i< this.assassins.getChildren().length; i++) {
             const assasin = this.assassins.getChildren()[i];
-            const distance = Phaser.Math.Distance.Between(assasin.x, assasin.y, this.anna.x, this.anna.y);
             let speed = 50;
+            // const distance = Phaser.Math.Distance.Between(assasin.x, assasin.y, this.anna.x, this.anna.y);
             // if (distance <= 100) speed = 0;
             this.physics.moveToObject(assasin, this.anna, speed);
         }
@@ -138,7 +138,7 @@ export class PlayScene extends Phaser.Scene{
                 this.anna.play("down", true);
             }
         }
-    },
+    }
     animsCreate(){
         this.anims.create({
             key: 'blaze',
@@ -159,38 +159,6 @@ export class PlayScene extends Phaser.Scene{
                 end: 41
             }),
             repeat: -1
-        });
-        this.anims.create({
-            key:'right',
-            frameRate: 10,
-            frames: this.anims.generateFrameNumbers('anna', {
-                start: 27,
-                end: 35
-            })
-        });
-        this.anims.create({
-            key:'left',
-            frameRate: 10,
-            frames: this.anims.generateFrameNumbers('anna', {
-                start: 9,
-                end: 17
-            })
-        });
-        this.anims.create({
-            key:'up',
-            frameRate: 10,
-            frames: this.anims.generateFrameNumbers('anna', {
-                start: 0,
-                end: 8
-            })
-        });
-        this.anims.create({
-            key:'down',
-            frameRate: 10,
-            frames: this.anims.generateFrameNumbers('anna', {
-                start: 18,
-                end: 26
-            })
         });
     }
 }
