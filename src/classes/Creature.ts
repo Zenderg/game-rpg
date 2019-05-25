@@ -23,7 +23,7 @@ export default abstract class Creature extends Phaser.Physics.Arcade.Sprite{
         fixed:false
     };
 
-    private _hpBar!: Phaser.GameObjects.Graphics;
+    private hpBar!: Phaser.GameObjects.Graphics;
     // @ts-ignore
     hpWatcher = new Proxy(this.hp, {
         get: (target:any, prop:string) => {
@@ -44,8 +44,6 @@ export default abstract class Creature extends Phaser.Physics.Arcade.Sprite{
         scene.sys.displayList.add(this);
         scene.physics.world.enableBody(this);
         this.setOrigin(0, 0).setDepth(1);
-
-        console.log(this._hpBar);
     }
 
     public reduceHp = (val: number) => {
@@ -53,28 +51,28 @@ export default abstract class Creature extends Phaser.Physics.Arcade.Sprite{
     };
 
     protected updateHpBar = () => {
-        if(this.hpBar) {
-            this.scene.sys.updateList.remove(this._hpBar);
-            this.scene.sys.displayList.remove(this._hpBar);
+        if(this.getHpBar) {
+            this.scene.sys.updateList.remove(this.hpBar);
+            this.scene.sys.displayList.remove(this.hpBar);
         }
-        this.hpBar = this.hpBarConfig;
+        this.setHpBar = this.hpBarConfig;
 
     };
-    // @ts-ignore
-    private get hpBar():object {
-        return this._hpBar;
+
+    private get getHpBar():object {
+        return this.hpBar;
     };
 
     // @ts-ignore
-    private set hpBar(config:hpBar) {
-        this._hpBar = this.scene.add.graphics({
+    private set setHpBar(config:hpBar) {
+        this.hpBar = this.scene.add.graphics({
             fillStyle: {
                 color: config.color
             }
         });
         console.log(this);
-        this._hpBar.fillRect(config.x, config.y, (this.hp.current / this.hp.max) * 100, 5).setDepth(2);
-        if(config.fixed) this._hpBar.setScrollFactor(0, 0);
+        this.hpBar.fillRect(config.x, config.y, (this.hp.current / this.hp.max) * 100, 5).setDepth(2);
+        if(config.fixed) this.hpBar.setScrollFactor(0, 0);
     }
 
     private checkDeath = () => {
