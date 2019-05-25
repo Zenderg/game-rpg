@@ -1,5 +1,6 @@
 import {CST} from "../CST";
 import Anna from "../classes/Anna";
+import Monster from "../classes/Monster";
 
 export class PlayScene extends Phaser.Scene{
     anna!: Phaser.Physics.Arcade.Sprite;
@@ -26,8 +27,8 @@ export class PlayScene extends Phaser.Scene{
         pimple.play('dazzle');
 
         this.anna = new Anna(this, 400, 400, 'anna', 26);
-        this.hooded = this.physics.add.sprite(200, 200, 'hooded').setDepth(1);
-        this.assassins = this.physics.add.group({immovable: true});
+        this.hooded = new Monster(this, 200, 200, 'hooded');
+        // this.assassins = this.physics.add.group({immovable: true});
         this.fireAttacks = this.physics.add.group();
 
         // create map
@@ -37,7 +38,7 @@ export class PlayScene extends Phaser.Scene{
         const buildings = map.createStaticLayer('buildings', tileset, 0, 0).setDepth(0);
         buildings.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.anna, buildings);
-        this.physics.add.collider(this.assassins, buildings);
+        // this.physics.add.collider(this.assassins, buildings);
         this.physics.world.setBounds(0,0, map.widthInPixels, map.heightInPixels);
 
         //debug layers
@@ -54,7 +55,7 @@ export class PlayScene extends Phaser.Scene{
         this.anna.setSize(40,50).setOffset(10, 10);
         this.anna.setCollideWorldBounds(true);
 
-        this.assassins.add(this.hooded);
+        // this.assassins.add(this.hooded);
 
         // pimple.on('animationupdate', () => {
         //     console.log("ОБНОВЛЯЮСЬ ХОЗЯИН");
@@ -77,33 +78,33 @@ export class PlayScene extends Phaser.Scene{
             }
         });
 
-        this.physics.world.addCollider(this.anna, this.assassins, (anna: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
-            hooded.destroy();
-            this.anna.reduceHp(-1);
-            let x = Phaser.Math.Between(0, this.game.renderer.width);
-            let y = Phaser.Math.Between(0, this.game.renderer.height);
-            for(let i = 0; i < 2; i++){
-                this.assassins.add(this.physics.add.sprite(x, y, 'hooded').setScale(2));
-            }
-        });
-        this.physics.world.addCollider(this.fireAttacks, this.assassins, (fireAttacks: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
-            fireAttacks.destroy();
-            hooded.destroy();
-            let x = Phaser.Math.Between(0, this.game.renderer.width);
-            let y = Phaser.Math.Between(0, this.game.renderer.height);
-            for(let i = 0; i < 2; i++){
-                this.assassins.add(this.physics.add.sprite(x, y, 'hooded').setScale(2));
-            }
-        });
+        // this.physics.world.addCollider(this.anna, this.assassins, (anna: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
+        //     hooded.destroy();
+        //     this.anna.reduceHp(-1);
+        //     let x = Phaser.Math.Between(0, this.game.renderer.width);
+        //     let y = Phaser.Math.Between(0, this.game.renderer.height);
+        //     for(let i = 0; i < 2; i++){
+        //         this.assassins.add(this.physics.add.sprite(x, y, 'hooded').setScale(2));
+        //     }
+        // });
+        // this.physics.world.addCollider(this.fireAttacks, this.assassins, (fireAttacks: Phaser.Physics.Arcade.Sprite, hooded: Phaser.Physics.Arcade.Sprite) => {
+        //     fireAttacks.destroy();
+        //     hooded.destroy();
+        //     let x = Phaser.Math.Between(0, this.game.renderer.width);
+        //     let y = Phaser.Math.Between(0, this.game.renderer.height);
+        //     for(let i = 0; i < 2; i++){
+        //         this.assassins.add(this.physics.add.sprite(x, y, 'hooded').setScale(2));
+        //     }
+        // });
     }
     update(time: number, delta: number){
-        for(let i = 0; i< this.assassins.getChildren().length; i++) {
-            const assasin = this.assassins.getChildren()[i];
-            let speed = 50;
-            // const distance = Phaser.Math.Distance.Between(assasin.x, assasin.y, this.anna.x, this.anna.y);
-            // if (distance <= 100) speed = 0;
-            this.physics.moveToObject(assasin, this.anna, speed);
-        }
+        // for(let i = 0; i< this.assassins.getChildren().length; i++) {
+        //     const assasin = this.assassins.getChildren()[i];
+        //     let speed = 50;
+        //     // const distance = Phaser.Math.Distance.Between(assasin.x, assasin.y, this.anna.x, this.anna.y);
+        //     // if (distance <= 100) speed = 0;
+        //     this.physics.moveToObject(assasin, this.anna, speed);
+        // }
 
 
             if(this.anna.active){
