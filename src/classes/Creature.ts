@@ -10,7 +10,7 @@ interface hpBar {
     fixed:boolean
 }
 
-export default class Creature extends Phaser.Physics.Arcade.Sprite{
+export default abstract class Creature extends Phaser.Physics.Arcade.Sprite{
     protected hp: hp = {
         current: 0,
         max: 0
