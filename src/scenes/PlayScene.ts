@@ -98,6 +98,7 @@ export class PlayScene extends Phaser.Scene{
         // });
     }
     update(time: number, delta: number){
+        this.hooded.chaseTarget(this.anna);
         // for(let i = 0; i< this.assassins.getChildren().length; i++) {
         //     const assasin = this.assassins.getChildren()[i];
         //     let speed = 50;
