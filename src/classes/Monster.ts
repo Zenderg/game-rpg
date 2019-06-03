@@ -8,6 +8,11 @@ interface agro {
     agroDelayTimer: number
 }
 
+interface startPosition {
+    x: number,
+    y: number
+}
+
 export default class Monster extends Creature {
     private readonly speed: number;
     private agroConfig: agro = {
@@ -18,6 +23,7 @@ export default class Monster extends Creature {
         agroDelayTimer: 0
     };
     private target!: Phaser.Physics.Arcade.Sprite;
+    private readonly startPosition:startPosition ={x:0, y:0};
 
     agroWatcher = new Proxy(this.agroConfig, {
         get: (target: any, prop: string) => {
@@ -30,6 +36,7 @@ export default class Monster extends Creature {
                 clearTimeout(target.agroDelayTimer);
                 target.agroDelayTimer = setTimeout(()=>{
                     target.agro = false;
+                    this.returnToStart();
                     }, target.agroDelay);
             }
             else{
@@ -41,6 +48,9 @@ export default class Monster extends Creature {
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frames?: string | number) {
         super(scene, x, y, texture, frames);
+
+        this.startPosition.x = x;
+        this.startPosition.y = y;
 
         // HP
         this.hp.max = 10;
@@ -62,6 +72,7 @@ export default class Monster extends Creature {
         this.checkAgro(this.target);
         this.chaseTarget(this.target);
         this.debugAgroRange();
+        console.log(this);
     };
 
     public initAgro = (target: Phaser.Physics.Arcade.Sprite) => {
@@ -87,6 +98,10 @@ export default class Monster extends Creature {
             this.scene.physics.moveToObject(this, obj, this.speed);
         }
     }
+
+    private returnToStart = () => {
+      this.scene.physics.moveTo(this, this.startPosition.x, this.startPosition.y, this.speed);
+    };
 
     private debugAgroRange = () => {
         if(this.graphics) this.graphics.destroy();
