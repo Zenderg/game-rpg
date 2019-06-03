@@ -1,19 +1,55 @@
 import Creature from "./Creature";
 
+interface agro {
+    agro: boolean,
+    targetInAgroRadius: boolean,
+    agroRadius: number,
+    agroDelay: number,
+    agroDelayTimer: number
+}
+
 export default class Monster extends Creature {
     private readonly speed: number;
-    private agroZone!: Phaser.GameObjects.Zone;
-    private target!: Phaser.Physics.Arcade.Sprite
+    private agroConfig: agro = {
+        agro: false,
+        targetInAgroRadius: false,
+        agroRadius: 150,
+        agroDelay: 2000,
+        agroDelayTimer: 0
+    };
+    private target!: Phaser.Physics.Arcade.Sprite;
+
+    agroWatcher = new Proxy(this.agroConfig, {
+        get: (target: any, prop: string) => {
+            return target[prop];
+        },
+        set: (target: any, prop: string, value: number) => {
+            // console.log(target, prop, value);
+            if(prop === "targetInAgroRadius" && value){
+                target.agro = true;
+                clearTimeout(target.agroDelayTimer);
+                target.agroDelayTimer = setTimeout(()=>{
+                    target.agro = false;
+                    }, target.agroDelay);
+            }
+            else{
+                target[prop] = value;
+            }
+            return true;
+        }
+    });
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frames?: string | number) {
         super(scene, x, y, texture, frames);
 
+        // HP
         this.hp.max = 10;
         this.hp.current = 10;
         this.hpBarConfig = {
             x: 250,
             y: 10,
             color: 0x15fa03,
-            fixed:true
+            fixed: true
         };
         this.updateHpBar();
 
@@ -23,37 +59,40 @@ export default class Monster extends Creature {
     }
 
     private updateScene = () => {
-      this.checkAgroZone(this.target);
+        this.checkAgro(this.target);
+        this.chaseTarget(this.target);
+        this.debugAgroRange();
     };
 
-    public initAgroZone = (target: Phaser.Physics.Arcade.Sprite) =>{
+    public initAgro = (target: Phaser.Physics.Arcade.Sprite) => {
         this.target = target;
-        this.agroZone = this.scene.add.zone(this.body.x, this.body.y, 200, 200);
-        this.agroZone.setOrigin(0.5, 0.5);
-        this.scene.physics.world.enable(this.agroZone, 0);
-        this.agroZone.body.moves = false;
-        this.scene.physics.add.overlap(target, this.agroZone);
-
-        this.agroZone.on("enterzone", () => {console.log("!!!!!!!!!!!");});
     };
 
-    private checkAgroZone = (target) => {
-        if(target){
-            const touching = this.agroZone.body.touching;
-            const wasTouching = this.agroZone.body.wasTouching;
+    private checkAgro = (target: Phaser.Physics.Arcade.Sprite) => {
+        if (target) {
+            const centerCords = this.body.center;
+            const targetCenterCords = this.target.body.center;
+            const distance = Phaser.Math.Distance.Between(centerCords.x, centerCords.y, targetCenterCords.x, targetCenterCords.y);
+            if (distance <= this.agroWatcher.agroRadius) {
+                this.agroWatcher.targetInAgroRadius = true;
 
-            if (touching.none && !wasTouching.none) {
-                this.agroZone.emit('leavezone');
+            } else {
+                this.agroWatcher.targetInAgroRadius = false;
             }
-            else if (!touching.none && wasTouching.none) {
-                this.agroZone.emit('enterzone');
-            }
-
-            this.agroZone.body.debugBodyColor = this.agroZone.body.touching.none ? 0x00ffff : 0xffff00;
         }
     };
 
-    chaseTarget(obj: Phaser.Physics.Arcade.Sprite){
-        this.scene.physics.moveToObject(this, obj, this.speed);
+    private chaseTarget(obj: Phaser.Physics.Arcade.Sprite) {
+        if (this.agroWatcher.agro) {
+            this.scene.physics.moveToObject(this, obj, this.speed);
+        }
+    }
+
+    private debugAgroRange = () => {
+        if(this.graphics) this.graphics.destroy();
+
+        this.circle = new Phaser.Geom.Circle(this.body.center.x, this.body.center.y, this.agroConfig.agroRadius);
+        this.graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0x00ff00 }, fillStyle: { color: 0xff0000 }});
+        this.graphics.strokeCircleShape(this.circle);
     }
 }

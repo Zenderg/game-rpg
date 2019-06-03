@@ -32,7 +32,7 @@ export class PlayScene extends Phaser.Scene{
 
         this.anna = new Anna(this, 400, 400, 'anna', this.keyboard, 26);
         this.hooded = new Monster(this, 200, 200, 'hooded');
-        this.hooded.initAgroZone(this.anna);
+        this.hooded.initAgro(this.anna);
         this.fireAttacks = this.physics.add.group();
 
         // create map
